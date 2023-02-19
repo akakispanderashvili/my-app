@@ -1,0 +1,59 @@
+<div class="container">
+  <input [(ngModel)]="movieName" name="movieName" placeholder="Movie name" />
+
+  <div class="card" *ngIf="movieInfo$ | async as movieInfo">
+    <p>{{ movieInfo.Title }}</p>
+    <p>Released {{ movieInfo.yearsAgo }} years ago</p>
+    <p>Actors: {{ movieInfo.actorNames }}</p>
+    <ul>
+      <li *ngFor="let currency of currencies$ | async">
+        {{ currency }}
+      </li>
+
+      <li *ngFor="let country of countries$ | async">
+        <img
+          src="https://flagpedia.net/data/flags/icon/36x27/{{
+            country.cca2.toLowerCase()
+          }}.png"
+        />
+        {{ country.name.common }}
+      </li>
+    </ul>
+  </div>
+
+  <!--  id in routing -->
+  <button (click)="togglePopup()" class="addRating" *ngIf="movieInfo$ | async">
+    Add Rating
+  </button>
+
+  <button (click)="fetchData()">Get Movie Info</button>
+  <app-movie-combiner></app-movie-combiner>
+</div>
+<div class="container">
+  <!-- other code here -->
+
+  <!-- <button (click)="togglePopup()">Add Rating</button> -->
+
+  <div id="popup-container" *ngIf="isPopupVisible" (click)="togglePopup()">
+    <div id="popup-content" (click)="$event.stopPropagation()">
+      <form>
+        <label>
+          Rating (1-10):
+          <input
+            type="number"
+            name="rating"
+            [(ngModel)]="rating"
+            required
+            min="1"
+            max="10"
+          />
+        </label>
+        <label>
+          Comment:
+          <textarea name="comment" [(ngModel)]="comment" required></textarea>
+        </label>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

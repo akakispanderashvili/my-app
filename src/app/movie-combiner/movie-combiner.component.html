@@ -1,0 +1,22 @@
+<div *ngIf="combinedInfo">
+  <p>Total length: {{ combinedLength }} minutes</p>
+  <p>Total population: {{ combinedPopulation }}</p>
+</div>
+<form>
+  <input
+    [(ngModel)]="movieName1"
+    name="movieName1"
+    placeholder="Movie name 1"
+  />
+  <input
+    [(ngModel)]="movieName2"
+    name="movieName2"
+    placeholder="Movie name 2"
+  />
+  <input
+    [(ngModel)]="movieName3"
+    name="movieName3"
+    placeholder="Movie name 3"
+  />
+  <button (click)="combineMovies()">Combine Movies</button>
+</form>
