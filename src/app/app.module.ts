@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MovieRatingComponent } from './movie-rating/movie-rating.component';
 import { AppRoutingModule } from './app-routing.module';
+import { FavouritesComponent } from './favourites/favourites.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
     MovieInfoComponent,
     MovieCombinerComponent,
     MovieRatingComponent,
+    FavouritesComponent,
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
   providers: [],

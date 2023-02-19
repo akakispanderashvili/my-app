@@ -1,4 +1,6 @@
 <div class="container">
+  <button id="favourites" routerLink="/favourites">Favourites</button>
+
   <input [(ngModel)]="movieName" name="movieName" placeholder="Movie name" />
 
   <div class="card" *ngIf="movieInfo$ | async as movieInfo">
@@ -30,10 +32,6 @@
   <app-movie-combiner></app-movie-combiner>
 </div>
 <div class="container">
-  <!-- other code here -->
-
-  <!-- <button (click)="togglePopup()">Add Rating</button> -->
-
   <div id="popup-container" *ngIf="isPopupVisible" (click)="togglePopup()">
     <div id="popup-content" (click)="$event.stopPropagation()">
       <form>
@@ -52,7 +50,9 @@
           Comment:
           <textarea name="comment" [(ngModel)]="comment" required></textarea>
         </label>
-        <button type="submit">Submit</button>
+        <button (click)="addToFavorites()" type="submit">
+          add to favourites
+        </button>
       </form>
     </div>
   </div>

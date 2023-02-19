@@ -7,8 +7,5 @@ import { Router } from '@angular/router';
   styleUrls: ['./movie-rating.component.css'],
 })
 export class MovieRatingComponent {
-  rating: number | null = null;
-  comment: string = '';
-
-  constructor(private router: Router) {}
+  constructor() {}
 }

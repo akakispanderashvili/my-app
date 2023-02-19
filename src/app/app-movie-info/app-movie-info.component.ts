@@ -3,6 +3,17 @@ import { forkJoin, map, mergeMap, Observable, tap } from 'rxjs';
 import { MovieService } from '../movie-service.service';
 import { Movie } from '../../assets/interfaces/movie.interface';
 import { Country } from '../../assets/interfaces/country.interface';
+import { HttpClient } from '@angular/common/http';
+
+interface FavoriteMovie {
+  id: number;
+  title: string;
+  year: number;
+  actors: string;
+  countries: Country[];
+  rating: number;
+  comment: string;
+}
 
 @Component({
   selector: 'app-movie-info',
@@ -21,8 +32,11 @@ export class MovieInfoComponent {
   rating: number = 0;
   comment: string = '';
   isPopupVisible = false;
+  favorites: any;
 
-  constructor(private movieService: MovieService) {}
+  constructor(private movieService: MovieService, private http: HttpClient) {
+    this.favorites = [];
+  }
   togglePopup() {
     this.isPopupVisible = !this.isPopupVisible;
   }
@@ -74,14 +88,43 @@ export class MovieInfoComponent {
     );
   }
 
-  // addToFavorites() {
-  //   const movie = {
-  //     title: this.movieInfo$.Title,
-  //     year: this.movieInfo$.Year,
-  //     actors: this.movieInfo$.Actors,
-  //     countries: this.countries$,
-  //     rating: this.rating,
-  //     comment: this.comment,
-  //   };
-  // }
+  addToFavorites() {
+    this.isPopupVisible = !this.isPopupVisible;
+    this.movieInfo$?.subscribe((data: Movie) => {
+      this.countries$?.subscribe((countries: Country[]) => {
+        const newFavorite: FavoriteMovie = {
+          id: this.favorites.length + 1,
+          title: data.Title,
+          year: parseInt(data.Year),
+          actors: data.Actors,
+          countries: countries,
+          rating: this.rating,
+          comment: this.comment,
+        };
+        const existingFavoriteIndex = this.favorites.findIndex(
+          (favorite: FavoriteMovie) => favorite.title === newFavorite.title
+        );
+        if (existingFavoriteIndex >= 0) {
+          const existingFavorite = this.favorites[existingFavoriteIndex];
+          const updatedFavorite: FavoriteMovie = {
+            ...existingFavorite,
+            rating: newFavorite.rating,
+            comment: newFavorite.comment,
+          };
+          this.favorites.splice(existingFavoriteIndex, 1, updatedFavorite);
+          this.http
+            .put(
+              `http://localhost:3000/movies/${existingFavorite.id}`,
+              updatedFavorite
+            )
+            .subscribe();
+        } else {
+          this.favorites.push(newFavorite);
+          this.http
+            .post('http://localhost:3000/movies', newFavorite)
+            .subscribe();
+        }
+      });
+    });
+  }
 }

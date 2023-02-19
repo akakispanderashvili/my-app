@@ -1,0 +1,21 @@
+<div class="center">
+  <button id="favourites" routerLink="/movies">Home</button>
+</div>
+<div class="container">
+  <h1>My Favorite Movies</h1>
+  <ul>
+    <li *ngFor="let movie of movies" (click)="showMovieDetails(movie)">
+      {{ movie.title }} ({{ movie.year }})
+    </li>
+  </ul>
+
+  <div *ngIf="selectedMovie">
+    <div class="popup">
+      <h2>{{ selectedMovie.title }}</h2>
+      <p>{{ selectedMovie.actors }}</p>
+      <p>Rating: {{ selectedMovie.rating }}</p>
+      <p>Comment: {{ selectedMovie.comment }}</p>
+      <button (click)="hideMovieDetails()">Close</button>
+    </div>
+  </div>
+</div>
