@@ -4,16 +4,7 @@ import { MovieService } from '../movie-service.service';
 import { Movie } from '../../assets/interfaces/movie.interface';
 import { Country } from '../../assets/interfaces/country.interface';
 import { HttpClient } from '@angular/common/http';
-
-interface FavoriteMovie {
-  id: number;
-  title: string;
-  year: number;
-  actors: string;
-  countries: Country[];
-  rating: number;
-  comment: string;
-}
+import { FavoriteMovie } from '../../assets/interfaces/favouriteMovie.interface';
 
 @Component({
   selector: 'app-movie-info',

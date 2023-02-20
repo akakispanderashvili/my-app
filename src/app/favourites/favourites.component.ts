@@ -1,15 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-interface FavoriteMovie {
-  id: number;
-  title: string;
-  year: number;
-  actors: string;
-  countries: string[];
-  rating: number;
-  comment: string;
-}
+import { FavoriteMovie } from '../../assets/interfaces/favouriteMovie.interface';
 
 @Component({
   selector: 'app-favourites',
