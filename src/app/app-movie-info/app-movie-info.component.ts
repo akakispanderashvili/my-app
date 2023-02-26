@@ -83,38 +83,46 @@ export class MovieInfoComponent {
     this.isPopupVisible = !this.isPopupVisible;
     this.movieInfo$?.subscribe((data: Movie) => {
       this.countries$?.subscribe((countries: Country[]) => {
-        const newFavorite: FavoriteMovie = {
-          id: this.favorites.length + 1,
-          title: data.Title,
-          year: parseInt(data.Year),
-          actors: data.Actors,
-          countries: countries,
-          rating: this.rating,
-          comment: this.comment,
-        };
-        const existingFavoriteIndex = this.favorites.findIndex(
-          (favorite: FavoriteMovie) => favorite.title === newFavorite.title
-        );
-        if (existingFavoriteIndex >= 0) {
-          const existingFavorite = this.favorites[existingFavoriteIndex];
-          const updatedFavorite: FavoriteMovie = {
-            ...existingFavorite,
-            rating: newFavorite.rating,
-            comment: newFavorite.comment,
-          };
-          this.favorites.splice(existingFavoriteIndex, 1, updatedFavorite);
-          this.http
-            .put(
-              `http://localhost:3000/movies/${existingFavorite.id}`,
-              updatedFavorite
-            )
-            .subscribe();
-        } else {
-          this.favorites.push(newFavorite);
-          this.http
-            .post('http://localhost:3000/movies', newFavorite)
-            .subscribe();
-        }
+        this.http
+          .get<FavoriteMovie[]>('http://localhost:3000/movies')
+          .subscribe((favorites) => {
+            const existingFavorite = favorites.find(
+              (f) => f.title === data.Title
+            );
+            if (existingFavorite) {
+              const updatedFavorite: FavoriteMovie = {
+                ...existingFavorite,
+                rating: this.rating,
+                comment: this.comment,
+              };
+              this.http
+                .put(
+                  `http://localhost:3000/movies/${existingFavorite.id}`,
+                  updatedFavorite
+                )
+                .subscribe(() => {
+                  const index = this.favorites.findIndex(
+                    (f: { title: string }) => f.title === data.Title
+                  );
+                  this.favorites.splice(index, 1, updatedFavorite);
+                });
+            } else {
+              const newFavorite: FavoriteMovie = {
+                id: favorites.length + 1,
+                title: data.Title,
+                year: parseInt(data.Year),
+                actors: data.Actors,
+                countries: countries,
+                rating: this.rating,
+                comment: this.comment,
+              };
+              this.http
+                .post('http://localhost:3000/movies', newFavorite)
+                .subscribe(() => {
+                  this.favorites.push(newFavorite);
+                });
+            }
+          });
       });
     });
   }
