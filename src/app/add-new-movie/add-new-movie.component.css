@@ -1,0 +1,72 @@
+#popup-container {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+
+#popup-content {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 500px;
+  overflow: auto;
+}
+
+#popup-content h3 {
+  margin-top: 0;
+}
+
+#popup-content .form-group {
+  margin-bottom: 20px;
+}
+
+#popup-content label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#popup-content input,
+#popup-content select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+#popup-content input[type="date"] {
+  appearance: none;
+}
+
+#popup-content .form-group.invalid input,
+#popup-content .form-group.invalid select {
+  border-color: red;
+}
+
+#popup-content .form-group.invalid label {
+  color: red;
+}
+
+#popup-content .form-group.invalid div {
+  color: red;
+  margin-top: 5px;
+}
+
+#popup-content .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: white;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}

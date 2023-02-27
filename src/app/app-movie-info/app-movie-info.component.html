@@ -1,5 +1,8 @@
 <div class="container">
-  <button id="favourites" routerLink="/favourites">Favourites</button>
+  <div class="buttons">
+    <button id="favourites" routerLink="/favourites">Favourites</button>
+    <button id="myMovies" routerLink="/newMovie">My movies</button>
+  </div>
 
   <input [(ngModel)]="movieName" name="movieName" placeholder="Movie name" />
 
@@ -29,6 +32,13 @@
   </button>
 
   <button (click)="fetchData()">Get Movie Info</button>
+  <button (click)="toggleAddMoviePopup()" id="addNewMovie">
+    Add new movie
+  </button>
+  <app-add-new-movie
+    *ngIf="isAddMoviePopupVisible"
+    (click)="toggleAddMoviePopup()"
+  ></app-add-new-movie>
   <app-movie-combiner></app-movie-combiner>
 </div>
 <div class="container">

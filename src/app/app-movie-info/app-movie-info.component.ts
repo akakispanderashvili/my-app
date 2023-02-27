@@ -126,4 +126,9 @@ export class MovieInfoComponent {
       });
     });
   }
+  isAddMoviePopupVisible = false;
+
+  toggleAddMoviePopup() {
+    this.isAddMoviePopupVisible = !this.isAddMoviePopupVisible;
+  }
 }

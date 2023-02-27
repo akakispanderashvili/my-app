@@ -1,0 +1,79 @@
+<div id="popup-container">
+  <div id="popup-content" (click)="$event.stopPropagation()">
+    <form [formGroup]="addMovieForm" (ngSubmit)="onSubmit()">
+      <h3>Add New Movie</h3>
+
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" formControlName="name" />
+        <div
+          *ngIf="
+            addMovieForm.get('name')?.invalid &&
+            (addMovieForm.get('name')?.dirty ||
+              addMovieForm.get('name')?.touched)
+          "
+        >
+          <div *ngIf="addMovieForm.get('name')?.errors?.['required']">
+            Name is required.
+          </div>
+          <div *ngIf="addMovieForm.get('name')?.errors?.['minlength']">
+            Name must be at least 3 characters long.
+          </div>
+
+          <div *ngIf="addMovieForm.get('name')?.errors?.['maxlength']">
+            Name cannot be more than 20 characters long.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Country</label>
+        <select formControlName="country">
+          <option value="" disabled>Select a country</option>
+          <option
+            *ngFor="let country of countries$ | async"
+            [value]="country.name.common"
+          >
+            {{ country.name.common }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            addMovieForm.get('country')?.invalid &&
+            (addMovieForm.get('country')?.dirty ||
+              addMovieForm.get('country')?.touched)
+          "
+        >
+          <div *ngIf="addMovieForm.get('country')?.errors?.['required']">
+            Country is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="form-group">
+        <label>Premiere Event Place</label>
+        <input type="text" formControlName="premiereEventPlace" />
+      </div> -->
+
+      <div class="form-group">
+        <label>Release Date</label>
+        <input type="date" formControlName="releaseDate" />
+        <div
+          *ngIf="
+            addMovieForm.get('releaseDate')?.invalid &&
+            (addMovieForm.get('releaseDate')?.dirty ||
+              addMovieForm.get('releaseDate')?.touched)
+          "
+        >
+          <div *ngIf="addMovieForm.get('releaseDate')?.errors?.['required']">
+            Release date is required.
+          </div>
+        </div>
+      </div>
+      <button (click)="(onSubmit)">Submit</button>
+    </form>
+    <!-- <div *ngIf="addMovieForm.get('releaseDate')?.errors?.['futureDate']">
+      Release date cannot be in the past.
+    </div> -->
+  </div>
+</div>

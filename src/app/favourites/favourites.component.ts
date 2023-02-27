@@ -21,12 +21,9 @@ export class FavouritesComponent {
 
   showMovieDetails(movie: FavoriteMovie) {
     this.selectedMovie = movie;
-    console.log(movie);
-    console.log(this.selectedMovie);
   }
 
   hideMovieDetails() {
     this.selectedMovie = undefined;
-    console.log(this.selectedMovie);
   }
 }

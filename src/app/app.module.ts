@@ -8,6 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { MovieRatingComponent } from './movie-rating/movie-rating.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FavouritesComponent } from './favourites/favourites.component';
+import { NewMovieComponent } from './new-movie/new-movie.component';
+import { AddNewMovieComponent } from './add-new-movie/add-new-movie.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,8 +19,16 @@ import { FavouritesComponent } from './favourites/favourites.component';
     MovieCombinerComponent,
     MovieRatingComponent,
     FavouritesComponent,
+    NewMovieComponent,
+    AddNewMovieComponent,
   ],
-  imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
