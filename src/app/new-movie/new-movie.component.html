@@ -1,1 +1,15 @@
-<p>new-movie works!</p>
+<button id="favourites" routerLink="/movies">Home</button>
+
+<div class="new-movies-container">
+  <div *ngFor="let movie of movies" class="new-movie-card">
+    <div class="movie-info">
+      <h2>{{ movie.name }}</h2>
+      <p>Country: {{ movie.country }}</p>
+      <p>Release Date: {{ movie.releaseDate }}</p>
+      <p>Is Movie: {{ movie.isMovie }}</p>
+      <p>Minutes: {{ movie.minutes }}</p>
+      <p>Number of Series: {{ movie.numberOfSeries }}</p>
+      <p>Rating: {{ movie.rating }}</p>
+    </div>
+  </div>
+</div>

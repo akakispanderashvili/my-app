@@ -3,14 +3,20 @@
   margin-top: 50px;
 }
 
-form, div {
+.center{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+#stars ngx-star-rating {
+  display: inline-block;
+}
 
-/* Style the input and button */
+
+
+
+
 input {
   padding: 10px;
   margin-right: 10px;
@@ -41,7 +47,6 @@ button:hover {
   background-color: black;
 }
 
-/* Style the movie info */
 ul {
   margin-top: 20px;
   list-style: none;

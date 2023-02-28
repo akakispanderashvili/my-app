@@ -7,6 +7,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MovieService {
+  getMovieByName(name: any) {
+    throw new Error('Method not implemented.');
+  }
   private omdbApiKey = 'c9fd1f5d';
 
   constructor(private http: HttpClient) {}

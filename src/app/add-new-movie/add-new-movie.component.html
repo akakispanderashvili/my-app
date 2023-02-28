@@ -47,6 +47,9 @@
           <div *ngIf="addMovieForm.get('country')?.errors?.['required']">
             Country is required.
           </div>
+          <div *ngIf="addMovieForm.get('country')?.errors?.['inaccessibility']">
+            Chosen country is not accessible for premiere.
+          </div>
         </div>
       </div>
 
@@ -72,7 +75,7 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Genres</label>
         <div class="checkbox-group" formArrayName="genres">
           <div class="checkbox-row" *ngFor="let genre of genres; let i = index">
@@ -97,7 +100,7 @@
             Please select at least one genre.
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="form-group">
         <label>Is this a movie or TV series?</label>
         <div class="radio-group">
@@ -126,16 +129,20 @@
         </div>
       </div>
 
-      <div class="form-group" *ngIf="isMovie$ | async">
+      <!-- <div class="form-group" *ngIf="isMovie$ | async">
         <label>Movie Length (in minutes)</label>
         <input type="number" formControlName="minutes" min="60" max="190" />
-      </div>
+      </div> -->
       <!--
       <div class="form-group" *ngIf="!(isMovie$ | async)">
         <label>Number of Series</label>
         <input type="number" formControlName="numberOfSeries" min="1" />
       </div> -->
-
+      <form>
+        <div>
+          <ngx-star-rating></ngx-star-rating>
+        </div>
+      </form>
       <button type="submit">Submit</button>
     </form>
   </div>

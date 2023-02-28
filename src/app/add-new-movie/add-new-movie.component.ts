@@ -10,8 +10,11 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { Country } from '../../assets/interfaces/country.interface';
 import { Movie } from '../../assets/interfaces/movie.interface';
+import { CountryInfo } from '../../assets/interfaces/countryInfo.interface';
+
 import { MovieService } from '../movie-service.service';
-import { Observable, debounceTime, map, forkJoin, mergeMap } from 'rxjs';
+import { Observable, debounceTime, map, forkJoin, mergeMap, tap } from 'rxjs';
+import { NgxStarRatingModule } from 'ngx-star-rating';
 
 @Component({
   selector: 'app-add-new-movie',
@@ -54,17 +57,8 @@ export class AddNewMovieComponent implements OnInit {
         ],
       ],
       country: ['', Validators.required],
-      premiereEventPlace: [{ value: '', disabled: true }],
       releaseDate: ['', Validators.required, this.futureDateValidator],
-      genres: this.fb.array([Validators.required, Validators.minLength(1)]),
       isMovie: [null],
-      minutes: [
-        { value: '', disabled: false },
-        [Validators.required, this.minutesValidator],
-      ],
-
-      numberOfSeries: [{ value: '', disabled: true }, Validators.min(1)],
-      rating: [''],
     });
   }
 
@@ -73,7 +67,6 @@ export class AddNewMovieComponent implements OnInit {
       const date = control.value;
       const today = new Date();
       const selectedDate = new Date(date);
-
       if (selectedDate < today) {
         resolve({ pastDate: true });
       } else {
@@ -147,20 +140,19 @@ export class AddNewMovieComponent implements OnInit {
   onSubmit() {
     if (this.addMovieForm.valid) {
       const formValue = this.addMovieForm.value;
-      const selectedGenres = formValue.genres
-        .map((checked: any, i: number) => (checked ? this.genres[i] : null))
-        .filter((value: any) => value !== null);
       const newMovie = {
         name: formValue.name,
         country: formValue.country,
         premiereEventPlace: formValue.premiereEventPlace,
         releaseDate: formValue.releaseDate,
-        genres: selectedGenres,
         isMovie: formValue.isMovie,
         minutes: formValue.minutes,
         numberOfSeries: formValue.numberOfSeries,
         rating: formValue.rating,
       };
+      this.http
+        .post('http://localhost:3000/newMovies', newMovie)
+        .subscribe(() => {});
       this.addMovieForm.reset();
     }
   }

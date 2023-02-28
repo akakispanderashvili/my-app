@@ -11,6 +11,7 @@ import { FavouritesComponent } from './favourites/favourites.component';
 import { NewMovieComponent } from './new-movie/new-movie.component';
 import { AddNewMovieComponent } from './add-new-movie/add-new-movie.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxStarRatingModule } from 'ngx-star-rating';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    NgxStarRatingModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

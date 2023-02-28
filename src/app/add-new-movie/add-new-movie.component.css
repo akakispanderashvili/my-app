@@ -74,6 +74,22 @@
   margin-top: 20px;
 }
 
+.first{
+  display: inline-block !important;
+}
+.second{
+  display: inline-block !important;
+}
+.third{
+  display: inline-block !important;
+}
+form, div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .checkbox-group {
   display: flex;
   flex-wrap: wrap;
