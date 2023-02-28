@@ -21,7 +21,7 @@
 }
 
 #popup-content h3 {
-  margin-top: 0;
+  margin-top: 40px;
 }
 
 #popup-content .form-group {
@@ -69,4 +69,26 @@
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
+}
+#first {
+  margin-top: 20px;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: center;
+}
+
+.checkbox-row {
+  display: flex;
+  flex-basis: 50%;
+  padding-right: 10px;
+}
+
+.checkbox-cell {
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
 }

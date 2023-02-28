@@ -3,7 +3,7 @@
     <form [formGroup]="addMovieForm" (ngSubmit)="onSubmit()">
       <h3>Add New Movie</h3>
 
-      <div class="form-group">
+      <div class="form-group" id="first">
         <label>Name</label>
         <input type="text" formControlName="name" />
         <div
@@ -50,14 +50,16 @@
         </div>
       </div>
 
-      <!-- <div class="form-group">
-        <label>Premiere Event Place</label>
-        <input type="text" formControlName="premiereEventPlace" />
-      </div> -->
-
       <div class="form-group">
-        <label>Release Date</label>
-        <input type="date" formControlName="releaseDate" />
+        <label for="releaseDate">Release Date</label>
+        <input type="date" formControlName="releaseDate" class="form-control" />
+        <div
+          *ngIf="addMovieForm.get('releaseDate')?.hasError('pastDate')"
+          class="text-danger"
+        >
+          Release date cannot be in the past.
+        </div>
+
         <div
           *ngIf="
             addMovieForm.get('releaseDate')?.invalid &&
@@ -70,10 +72,71 @@
           </div>
         </div>
       </div>
-      <button (click)="(onSubmit)">Submit</button>
+      <div class="form-group">
+        <label>Genres</label>
+        <div class="checkbox-group" formArrayName="genres">
+          <div class="checkbox-row" *ngFor="let genre of genres; let i = index">
+            <div class="checkbox-cell">
+              <input type="checkbox" />
+              <label>{{ genre }}</label>
+            </div>
+            <div
+              class="checkbox-cell"
+              *ngIf="(i + 1) % 2 === 0 || i === genres.length - 1"
+            ></div>
+          </div>
+        </div>
+        <div
+          *ngIf="
+            addMovieForm.get('genres')?.invalid &&
+            (addMovieForm.get('genres')?.dirty ||
+              addMovieForm.get('genres')?.touched)
+          "
+        >
+          <div *ngIf="addMovieForm.get('genres')?.errors?.['required']">
+            Please select at least one genre.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Is this a movie or TV series?</label>
+        <div class="radio-group">
+          <div>
+            <input
+              type="radio"
+              id="movie"
+              name="isMovie"
+              value="true"
+              formControlName="isMovie"
+              (change)="onMovieTypeChange()"
+            />
+            <label for="movie">Movie</label>
+          </div>
+          <!-- <div>
+            <input
+              type="radio"
+              id="tv-series"
+              name="isMovie"
+              value="false"
+              formControlName="isMovie"
+              (change)="onMovieTypeChange()"
+            />
+            <label for="tv-series">TV Series</label>
+          </div> -->
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="isMovie$ | async">
+        <label>Movie Length (in minutes)</label>
+        <input type="number" formControlName="minutes" min="60" max="190" />
+      </div>
+      <!--
+      <div class="form-group" *ngIf="!(isMovie$ | async)">
+        <label>Number of Series</label>
+        <input type="number" formControlName="numberOfSeries" min="1" />
+      </div> -->
+
+      <button type="submit">Submit</button>
     </form>
-    <!-- <div *ngIf="addMovieForm.get('releaseDate')?.errors?.['futureDate']">
-      Release date cannot be in the past.
-    </div> -->
   </div>
 </div>
