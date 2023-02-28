@@ -20,6 +20,7 @@ import { Observable, debounceTime, map, forkJoin, mergeMap } from 'rxjs';
 })
 export class AddNewMovieComponent implements OnInit {
   addMovieForm: FormGroup;
+
   genres: string[] = [
     'Action',
     'Adventure',
@@ -35,6 +36,7 @@ export class AddNewMovieComponent implements OnInit {
   countries$: Observable<Country[]> | undefined;
   isPopupVisible = false;
   movieInfo$: Observable<Movie> | undefined;
+  isMovie$: Observable<boolean> | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -54,23 +56,40 @@ export class AddNewMovieComponent implements OnInit {
       country: ['', Validators.required],
       premiereEventPlace: [{ value: '', disabled: true }],
       releaseDate: ['', Validators.required, this.futureDateValidator],
-      genres: this.fb.array([], Validators.required),
-      isMovie: [true],
-      minutes: [{ value: '', disabled: false }],
-      numberOfSeries: [{ value: '', disabled: true }],
+      genres: this.fb.array([Validators.required, Validators.minLength(1)]),
+      isMovie: [null],
+      minutes: [
+        { value: '', disabled: false },
+        [Validators.required, this.minutesValidator],
+      ],
+
+      numberOfSeries: [{ value: '', disabled: true }, Validators.min(1)],
       rating: [''],
     });
   }
 
-  futureDateValidator(control: FormControl) {
-    const date = control.value;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const selectedDate = new Date(date);
-    if (selectedDate < today) {
-      return { futureDate: true };
-    }
-    return null;
+  futureDateValidator(control: FormControl): Promise<ValidationErrors | null> {
+    return new Promise((resolve, reject) => {
+      const date = control.value;
+      const today = new Date();
+      const selectedDate = new Date(date);
+
+      if (selectedDate < today) {
+        resolve({ pastDate: true });
+      } else {
+        resolve(null);
+      }
+    });
+  }
+  minutesValidator(control: AbstractControl): Promise<ValidationErrors | null> {
+    return new Promise((resolve, reject) => {
+      const minutes = control.value;
+      if (minutes < 60 || minutes > 190) {
+        resolve({ range: true });
+      } else {
+        resolve(null);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -83,6 +102,31 @@ export class AddNewMovieComponent implements OnInit {
           this.fetchCountries();
         }
       });
+
+    const isMovieControl = this.addMovieForm.get('isMovie');
+    if (isMovieControl) {
+      this.isMovie$ = isMovieControl.valueChanges;
+      this.isMovie$.subscribe((value: boolean) => {
+        if (value === true) {
+          this.addMovieForm.get('minutes')?.enable();
+          this.addMovieForm.get('numberOfSeries')?.disable();
+        } else if (value === false) {
+          this.addMovieForm.get('minutes')?.disable();
+          this.addMovieForm.get('numberOfSeries')?.enable();
+        }
+      });
+    }
+  }
+
+  onMovieTypeChange() {
+    const isMovieControl = this.addMovieForm.get('isMovie');
+    if (isMovieControl?.value === true) {
+      this.addMovieForm.get('minutes')?.enable();
+      this.addMovieForm.get('numberOfSeries')?.disable();
+    } else if (isMovieControl?.value === false) {
+      this.addMovieForm.get('minutes')?.disable();
+      this.addMovieForm.get('numberOfSeries')?.enable();
+    }
   }
 
   fetchCountries() {
