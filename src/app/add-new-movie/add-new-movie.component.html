@@ -75,21 +75,18 @@
           </div>
         </div>
       </div>
-      <!-- <div class="form-group">
+      <div class="form-group">
         <label>Genres</label>
-        <div class="checkbox-group" formArrayName="genres">
-          <div class="checkbox-row" *ngFor="let genre of genres; let i = index">
+        <div class="checkbox-group">
+          <div class="checkbox-row" *ngFor="let genre of genres">
             <div class="checkbox-cell">
               <input type="checkbox" />
-              <label>{{ genre }}</label>
+              <label>{{ genre.name }}</label>
             </div>
-            <div
-              class="checkbox-cell"
-              *ngIf="(i + 1) % 2 === 0 || i === genres.length - 1"
-            ></div>
+            <div class="checkbox-cell"></div>
           </div>
         </div>
-        <div
+        <!-- <div
           *ngIf="
             addMovieForm.get('genres')?.invalid &&
             (addMovieForm.get('genres')?.dirty ||
@@ -99,8 +96,12 @@
           <div *ngIf="addMovieForm.get('genres')?.errors?.['required']">
             Please select at least one genre.
           </div>
-        </div>
-      </div> -->
+          <div *ngIf="addMovieForm.get('genres')?.errors?.['minlength']">
+            Please select at least one genre.
+          </div>
+        </div> -->
+      </div>
+
       <div class="form-group">
         <label>Is this a movie or TV series?</label>
         <div class="radio-group">
@@ -111,38 +112,43 @@
               name="isMovie"
               value="true"
               formControlName="isMovie"
-              (change)="onMovieTypeChange()"
+              (change)="showMovieLength = true"
+              [checked]="showMovieLength"
             />
             <label for="movie">Movie</label>
           </div>
-          <!-- <div>
+          <div>
             <input
               type="radio"
               id="tv-series"
               name="isMovie"
               value="false"
               formControlName="isMovie"
-              (change)="onMovieTypeChange()"
+              (change)="showMovieLength = false"
+              [checked]="!showMovieLength"
             />
             <label for="tv-series">TV Series</label>
-          </div> -->
+          </div>
         </div>
       </div>
 
-      <!-- <div class="form-group" *ngIf="isMovie$ | async">
+      <div class="form-group" *ngIf="showMovieLength">
         <label>Movie Length (in minutes)</label>
         <input type="number" formControlName="minutes" min="60" max="190" />
-      </div> -->
-      <!--
-      <div class="form-group" *ngIf="!(isMovie$ | async)">
+      </div>
+
+      <!-- <div
+        class="form-group"
+        *ngIf="addMovieForm.get('isMovie')?.value === false"
+      >
         <label>Number of Series</label>
         <input type="number" formControlName="numberOfSeries" min="1" />
       </div> -->
-      <form>
-        <div>
-          <ngx-star-rating></ngx-star-rating>
-        </div>
-      </form>
+
+      <div>
+        <ngx-star-rating formControlName="rating"></ngx-star-rating>
+        <div>Rating: {{ addMovieForm.value.rating }}</div>
+      </div>
       <button type="submit">Submit</button>
     </form>
   </div>

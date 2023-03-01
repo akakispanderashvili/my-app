@@ -18,6 +18,7 @@
   border-radius: 5px;
   width: 500px;
   overflow: auto;
+  padding-top: 500px;
 }
 
 #popup-content h3 {

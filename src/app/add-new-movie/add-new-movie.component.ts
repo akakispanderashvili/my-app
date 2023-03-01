@@ -24,23 +24,26 @@ import { NgxStarRatingModule } from 'ngx-star-rating';
 export class AddNewMovieComponent implements OnInit {
   addMovieForm: FormGroup;
 
-  genres: string[] = [
-    'Action',
-    'Adventure',
-    'Comedy',
-    'Drama',
-    'Fantasy',
-    'Horror',
-    'Mystery',
-    'Romance',
-    'Sci-Fi',
-    'Thriller',
+  genres: { name: string; isChecked: boolean }[] = [
+    { name: 'Action', isChecked: false },
+    { name: 'Adventure', isChecked: false },
+    { name: 'Comedy', isChecked: false },
+    { name: 'Drama', isChecked: false },
+    { name: 'Fantasy', isChecked: false },
+    { name: 'Horror', isChecked: false },
+    { name: 'Mystery', isChecked: false },
+    { name: 'Romance', isChecked: false },
+    { name: 'Sci-Fi', isChecked: false },
+    { name: 'Thriller', isChecked: false },
   ];
+
   countries$: Observable<Country[]> | undefined;
   isPopupVisible = false;
+  showMovieLength = false;
+
   movieInfo$: Observable<Movie> | undefined;
   isMovie$: Observable<boolean> | undefined;
-
+  isSeries: boolean = false;
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -58,7 +61,9 @@ export class AddNewMovieComponent implements OnInit {
       ],
       country: ['', Validators.required],
       releaseDate: ['', Validators.required, this.futureDateValidator],
-      isMovie: [null],
+      rating: ['', Validators.required],
+      minutes: ['', [Validators.required, this.minutesValidator]],
+      isMovie: [false, Validators.required],
     });
   }
 
@@ -78,6 +83,7 @@ export class AddNewMovieComponent implements OnInit {
     return new Promise((resolve, reject) => {
       const minutes = control.value;
       if (minutes < 60 || minutes > 190) {
+        console.log('is');
         resolve({ range: true });
       } else {
         resolve(null);
@@ -99,27 +105,31 @@ export class AddNewMovieComponent implements OnInit {
     const isMovieControl = this.addMovieForm.get('isMovie');
     if (isMovieControl) {
       this.isMovie$ = isMovieControl.valueChanges;
-      this.isMovie$.subscribe((value: boolean) => {
-        if (value === true) {
-          this.addMovieForm.get('minutes')?.enable();
-          this.addMovieForm.get('numberOfSeries')?.disable();
-        } else if (value === false) {
-          this.addMovieForm.get('minutes')?.disable();
-          this.addMovieForm.get('numberOfSeries')?.enable();
-        }
-      });
+      if (this.isMovie$) {
+        this.isMovie$.subscribe((value: boolean) => {
+          if (value === true) {
+            this.addMovieForm.get('minutes')?.enable();
+            this.addMovieForm.get('numberOfSeries')?.disable();
+          } else if (value === false) {
+            this.addMovieForm.get('minutes')?.disable();
+            this.addMovieForm.get('numberOfSeries')?.enable();
+          }
+        });
+      }
     }
   }
 
   onMovieTypeChange() {
-    const isMovieControl = this.addMovieForm.get('isMovie');
-    if (isMovieControl?.value === true) {
-      this.addMovieForm.get('minutes')?.enable();
-      this.addMovieForm.get('numberOfSeries')?.disable();
-    } else if (isMovieControl?.value === false) {
-      this.addMovieForm.get('minutes')?.disable();
-      this.addMovieForm.get('numberOfSeries')?.enable();
+    const isMovie = this.addMovieForm.get('isMovie')?.value;
+    this.showMovieLength = isMovie;
+    if (isMovie === true) {
+      this.addMovieForm
+        .get('minutes')
+        ?.setValidators([Validators.required, this.minutesValidator]);
+    } else if (isMovie === false) {
+      this.addMovieForm.get('minutes')?.clearValidators();
     }
+    this.addMovieForm.get('minutes')?.updateValueAndValidity();
   }
 
   fetchCountries() {
@@ -138,6 +148,7 @@ export class AddNewMovieComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.addMovieForm.errors);
     if (this.addMovieForm.valid) {
       const formValue = this.addMovieForm.value;
       const newMovie = {
@@ -154,6 +165,7 @@ export class AddNewMovieComponent implements OnInit {
         .post('http://localhost:3000/newMovies', newMovie)
         .subscribe(() => {});
       this.addMovieForm.reset();
+      console.log('movie added');
     }
   }
 }
