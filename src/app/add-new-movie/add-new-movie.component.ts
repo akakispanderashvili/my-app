@@ -62,8 +62,8 @@ export class AddNewMovieComponent implements OnInit {
       country: ['', Validators.required],
       releaseDate: ['', Validators.required, this.futureDateValidator],
       rating: ['', Validators.required],
-      minutes: ['', [Validators.required, this.minutesValidator]],
-      isMovie: [false, Validators.required],
+      minutes: ['', [Validators.required]],
+      // isMovie: [false, Validators.required],
     });
   }
 

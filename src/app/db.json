@@ -16,6 +16,14 @@
       "isMovie": "true",
       "rating": 4,
       "id": 2
+    },
+    {
+      "name": "dune",
+      "country": "Canada",
+      "releaseDate": "2023-03-22",
+      "minutes": 61,
+      "rating": 4,
+      "id": 3
     }
   ]
 }
